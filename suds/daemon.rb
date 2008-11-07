@@ -39,7 +39,7 @@ module Suds
                 if line =~ /^logon: ([A-Za-z0-9.-_]+)$/
                     @name = $1
                 elsif line =~ /^to ([A-Za-z0-9.-_]+): (.*)$/
-                    appcol.find($1).give_message(@name, $2) rescue nil
+                    appcol.find($1).give_message(@name, $2) rescue puts $!
                 end
             end; appcol.delete self }
         end
