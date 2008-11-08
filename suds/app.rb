@@ -20,6 +20,10 @@ module Suds
             @thread.kill
             @sock.close
         end
+        def join
+            %w(INT TERM).each{|s|trap(s){disconnect}}
+            @thread.value
+        end
         def app_list
             @sock.puts "list of apps?"
             until @temp['applist']; end
