@@ -1,9 +1,9 @@
 
-struct SudsPtr {
+typedef struct {
     char* appname
-};
+} SudsPtr;
 
-struct SudsPtr suds_register(char* appname, void(*receiver)(char*));
-void suds_send(struct SudsPtr self, char* appname, char* msg);
-void suds_disconnect(struct SudsPtr self);
+SudsPtr suds_register(char* appname, void(*receiver)(char*));
+void suds_send(SudsPtr self, char* appname, char* msg);
+void suds_disconnect(SudsPtr self);
 
