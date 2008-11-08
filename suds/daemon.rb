@@ -1,5 +1,6 @@
 require 'socket'
 require 'thread'
+require 'json'
 module Suds
     class AppCollection < Array
         def find appname
@@ -34,14 +35,16 @@ module Suds
             @name = appname
             @sock = socket
             @lock = Mutex.new
-            @thrd = Thread.start { until @sock.closed?
-                line = @sock.readline rescue next
+            @thrd = Thread.start { catch(:e_loop) { until @sock.closed?
+                line = @sock.readline rescue throw(:e_loop)
                 if line =~ /^logon: ([A-Za-z0-9.-_]+)$/
                     @name = $1
                 elsif line =~ /^to ([A-Za-z0-9.-_]+): (.*)$/
-                    appcol.find($1).give_message(@name, $2) rescue puts $!
+                    appcol.find($1).give_message(@name, $2) rescue puts($!)
+                elsif line =~ /^list of apps\?$/
+                    @sock.puts("app list: #{JSON.generate(appcol.collect{|a|a.name})}")
                 end
-            end; appcol.delete self }
+            end }; appcol.delete self }
         end
         def lock(&blk)
             @lock.synchronize &blk

@@ -1,3 +1,4 @@
+require 'rubygems' rescue nil
 require 'suds/daemon'
 require 'suds/app'
 
