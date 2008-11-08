@@ -4,7 +4,7 @@ require 'json'
 module Suds
     class AppCollection < Array
         def find appname
-            select {|app| app.name == appname}.first
+            select {|app| app.name =~ /^#{Regexp.escape(appname)}(\#[A-Fa-f0-9]{8,16})?$/ }
         end
     end
     class Daemon
@@ -37,10 +37,10 @@ module Suds
             @lock = Mutex.new
             @thrd = Thread.start { catch(:e_loop) { until @sock.closed?
                 line = @sock.readline rescue throw(:e_loop)
-                if line =~ /^logon: ([A-Za-z0-9.-_]+)$/
+                if line =~ /^logon: ([A-Za-z0-9.-_#]+)$/
                     @name = $1
-                elsif line =~ /^to ([A-Za-z0-9.-_]+): (.*)$/
-                    appcol.find($1).give_message(@name, $2) rescue puts($!)
+                elsif line =~ /^to ([A-Za-z0-9.-_#]+): (.*)$/
+                    appcol.find($1).each{|a|a.give_message(@name, $2) rescue puts($!)}
                 elsif line =~ /^list of apps\?$/
                     @sock.puts("app list: #{JSON.generate(appcol.collect{|a|a.name})}")
                 end

@@ -7,7 +7,7 @@ ANSI_GREEN = "\e[32m"
 ANSI_RED = "\e[31m"
 ANSI_BOLD = "\e[1m"
 at_exit do
-    puts "\e[0m"
+    puts "\e[0m" # ensure the screen clears
 end
 print ANSI_WHITE_ON_BLACK
 print "Suds Console (send a message to suds.console)"
