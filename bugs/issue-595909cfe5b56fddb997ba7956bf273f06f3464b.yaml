@@ -1,0 +1,21 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Malicious programs could intercept messages
+desc: |-
+  Some malicious programs could intercept the messages of other programs in two ways:
+  * by treating itself as an instance of an instance, eg. core.irb#e4d876ce#face8888 because of the way Suds::AppCollection#find works.
+  * by using the same full name, because Suds-Daemon currently won't block duplicate names.
+type: :bugfix
+component: suds
+release: 
+reporter: Devyn Cairns <devyn.cairns@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2008-11-11 22:50:38.146856 Z
+references: []
+
+id: 595909cfe5b56fddb997ba7956bf273f06f3464b
+log_events: 
+- - 2008-11-11 22:50:42.858415 Z
+  - Devyn Cairns <devyn.cairns@gmail.com>
+  - created
+  - ""
